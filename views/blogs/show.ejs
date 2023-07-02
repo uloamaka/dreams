@@ -1,0 +1,29 @@
+<%- include('../layouts/header') %>
+<main>
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <!-- views/blogs/show.ejs -->
+          <div>
+            <h1><%= blog.title %></h1>
+          </div>
+          <div class="col-12 thumbnails p-1 ">
+            <img src="/images/<%= blog.multimedia.url %>" class="rounded mx-auto d-block w-100" style="max-height: 500px;" alt="<%= blog.multimedia.description %>">
+          </div>
+          <p><%= blog.content %></p>
+          <p class="blog-multimedia-description"><%= blog.multimedia.description %></p>
+          <p class="blog-author-date">Written by <%= blog.author %> on <%= blog.createdAt.toDateString() %></p>
+
+          <a href="/blogs/<%= blog._id %>">Edit</a>
+          <form action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <button class="btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<hr>
+<%- include('../layouts/footer') %>

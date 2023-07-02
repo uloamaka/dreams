@@ -1,0 +1,37 @@
+<%-include ("../layouts/header") %>
+<main>
+  <section>
+    <div class="container">
+      <div class="col-12">
+        <div class="row">
+          <div class="">
+            <h2>Our Blogs</h2>
+          </div>
+          <% if (blogs.length > 0) { %>
+          <% blogs.forEach(function(blog) { %>
+          <div class="blog">
+            <h1 class="blog-title"><%= blog.title %></h1>
+            <div class="col-12 thumbnails p-1 ">
+              <% if (blog.multimedia.type === 'image') { %>
+              <img src="../../images/<%= blog.multimedia.url %>" alt="<%= blog.multimedia.description %>" class="rounded mx-auto d-block w-100" style="max-height: 500px;">
+              <% } %>
+              <p class="blog-multimedia-description"><%= blog.multimedia.description %></p>
+            </div>
+            <p class="blog-content">
+              <%= blog.content.length > 500 ? blog.content.slice(0, 500) + '...' : blog.content %>
+            </p>
+            <button class="btn btn-primary" onclick="window.location.href='/blogs/<%= blog.id %>'">Read More</button>
+            <% }); %>
+            <% } else { %>
+            <p>No blogs found.</p>
+            <% } %>
+            <div>
+              <a href="/blogs/new">add new blog...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+</main>
+<hr>
+<%-include ("../layouts/footer") %>

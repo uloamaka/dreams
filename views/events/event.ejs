@@ -1,0 +1,62 @@
+<%- include("../layouts/header") %>
+
+<main>
+  <section>
+    <div class="container">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+            <h2>What We Can Do For You!</h2>
+          </div>
+          <div class="row">
+            <% const partyTypes = [
+            { name: "Wedding party", image: "../images/arion-reyvonputra-_8RGPzJimWw-unsplash.jpg" },
+            { name: "Birthday party", image: "../images/gift-habeshaw-aqM730y624E-unsplash.jpg" },
+            { name: "Corporate party", image: "../images/ibrahim-boran-m8YjB0noWiY-unsplash.jpg" },
+            { name: "Dinner party", image: "../images/jay-wennington-N_Y88TWmGwA-unsplash.jpg" },
+            { name: "Farewell party", image: "../images/yutacar-JKMnm3CIncw-unsplash.jpg" },
+            { name: "Welcome party", image: "../images/luigi-pozzoli-34Xicn82lY4-unsplash.jpg" },
+            { name: "Engagement party", image: "../images/kimberly-fowler-M1KfuZ-2Vjs-unsplash.jpg" },
+            { name: "Retirement party", image: "../images/sirio-hm3efUMoReg-unsplash.jpg" },
+            { name: "Graduation party", image: "../images/elena-de-soto-w423NnHFjFg-unsplash.jpg" }
+          ]; %>
+            <% for (let i = 0; i < partyTypes.length; i++) { %>
+            <div class="col-lg-4 col-md-6 col-sm-12 thumbnails <% if (i >= 3) { %>hidden<% } %>">
+              <div>
+                <a href="/contact/" class="text-decoration-none text-reset thumbnails-link">
+                  <h4><%= partyTypes[i].name %></h4>
+                  <img src="<%= partyTypes[i].image %>" class="rounded mx-auto d-block" alt="Photo 3">
+                  <p class="event-page-content">Lorem ipsum dolor your <%= partyTypes[i].name %>, sit amet consectetur adipisicing elit. Explicabo, asperiores.</p>
+                </a>
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="load-more">Show More</button>
+      </div>
+    </div>
+  </section>
+</main>
+<hr>
+<%- include("../layouts/footer") %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const showMoreButton = document.querySelector("#load-more");
+    const thumbnails = document.querySelectorAll(".thumbnails");
+    let currentItem = 3;
+
+    showMoreButton.addEventListener('click', function() {
+      for (let i = currentItem; i < currentItem + 3; i++) {
+        if (thumbnails[i]) {
+          thumbnails[i].classList.remove("hidden");
+        }
+      }
+      currentItem += 3;
+      if (currentItem >= thumbnails.length) {
+        showMoreButton.style.display = "none";
+      }
+    });
+  });
+</script>

@@ -1,0 +1,11 @@
+<%-include ("../layouts/header") %>
+<main>
+  <section>
+    <form method="POST" action="/gallery" enctype="multipart/form-data">
+      <input type="file" class="admin__input" id="image" name="image" accept="image/*" required>
+      <button type="submit">Upload</button>
+    </form>
+  </section>
+</main>
+<hr>
+<%-include ("../layouts/footer") %>
