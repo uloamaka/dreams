@@ -12,7 +12,7 @@
           <div class="col-lg-4 col-md-6 col-sm-6 thumbnails <% if (i >= 6) { %>hidden<% } %> p-2">
             <div class="">
               <% const gallery = galleries[i]; %>
-              <img src="/images/<%= gallery.image %>" class=" gallery-image" alt="Gallery Image" data-toggle="modal" data-target="#imageModal<%= i %>">
+              <img src="/images/<%= gallery.image %>" class=" gallery-image  rounded mx-auto d-block w-100" alt="Gallery Image" data-toggle="modal" data-target="#imageModal<%= i %>">
             </div>
           </div>
           <!-- Modal -->

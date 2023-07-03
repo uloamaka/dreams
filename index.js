@@ -19,8 +19,6 @@ const express = require("express"),
   methodOverride = require("method-override");
 
 app.use(methodOverride("_method"));
-
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -52,15 +50,29 @@ app.use(function (req, res, next) {
   next();
 });
 
-mongoose.set("strictQuery", false);
-mongoose
-  .connect("mongodb://127.0.0.1:27017/splendidV8", {
+// mongoose.set("strictQuery", false);
+// mongoose
+//   .connect("mongodb://127.0.0.1:27017/splendidV8", {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => console.log("mongoDB connected successfully!"))
+//   .catch((err) => console.error("Could not connect to mongoDB", err));
+
+//connect to atlas
+const uri =
+  "mongodb+srv://dreams:pass5055@dreams.5vef4ul.mongodb.net/?retryWrites=true&w=majority";
+
+  mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  })
-  .then(() => console.log("mongoDB connected successfully!"))
-  .catch((err) => console.error("Could not connect to mongoDB", err));
+  });
 
+  const db = mongoose.connection;
+  db.on("error", console.error.bind(console, "Connection error:"));
+  db.once("open", () => {
+    console.log("Connected to MongoDB Atlas");
+  });
 // app.use(bodyParser.json());
 app.use(express.json());
 app.use("/", home);
@@ -74,7 +86,17 @@ app.use("/login", login);
 app.use("/logout", logout);
 app.use("/signup", signup);
 
+
+
+
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Listening on "http://localhost:${port}" ...`);
+const server = app.listen(port, () => {
+  console.log(`Dreams listening on "port : ${port}" ...`);
 });
+
+
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000;
+
+
+
