@@ -5,19 +5,11 @@ const middleware = require("../middleware");
 const multer = require("multer");
 
 // Create a multer storage configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/images"); // Set the destination folder where uploaded images will be stored
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9); // Generate a unique filename for the uploaded image
-    const extension = file.originalname.split(".").pop(); // Extract the file extension
-    cb(null, `gallery-${uniqueSuffix}.${extension}`); // Set the filename for the uploaded image
-  },
-});
+const storage = multer.memoryStorage();
+
 
 // Create a multer instance with the storage configuration
-const upload = multer({ storage: storage, limits: { fileSize: 10000000 } });
+const upload = multer({ storage: storage });
 
 //GET all galleries
 router.get("/", async (req, res) => {
@@ -53,9 +45,11 @@ router.post(
   upload.single("image"),
   async (req, res) => {
     try {
-      const { filename } = req.file; // Get the filename of the uploaded image
+      const { originalname,buffer, mimetype } = req.file; // Get the filename of the uploaded image
       const newGallery = new Gallery({
-        image: filename,
+        name: originalname,
+        data: buffer,
+        contentType: mimetype
       });
       const savedGallery = await newGallery.save();
       res.status(201).redirect("/gallery");

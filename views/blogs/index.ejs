@@ -13,7 +13,7 @@
             <h1 class="blog-title"><%= blog.title %></h1>
             <div class="col-12 thumbnails p-1 ">
               <% if (blog.multimedia.type === 'image') { %>
-              <img src="../../images/<%= blog.multimedia.url %>" alt="<%= blog.multimedia.description %>" class="rounded mx-auto d-block w-100" style="max-height: 500px;">
+              <img src="data:image/<%= blog.multimedia.contentType %>;base64,<%= blog.multimedia.data.toString('base64') %>" alt="<%= blog.multimedia.description %>" class=" rounded mx-auto d-block w-100" style="max-height: 500px;">
               <% } %>
               <p class="blog-multimedia-description"><%= blog.multimedia.description %></p>
             </div>

@@ -13,20 +13,24 @@ const blogSchema = new mongoose.Schema({
     type: {
       type: String,
       enum: ["video", "image", "audio", "interactive"],
-      default: "image"
+      default: "image",
     },
-    url: {
+    name: {
       type: String,
-       required: true,
+      required: true, // This field is required
+    },
+    data: {
+      type: Buffer,
+      required: true,
     },
     description: {
       type: String,
-      default:"Photo by alex"
+      default: "Photo by alex",
     },
   },
   author: {
     type: String,
-     required: true,
+    required: true,
   },
   createdAt: {
     type: Date,

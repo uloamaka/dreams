@@ -28,50 +28,49 @@
 
                    Dream big and let us turn your dreams into reality. Contact Dreams Events today and let us embark on a journey together to create an event that will be cherished for years to come.
                  </p>
-                </div>
-               <hr>
-               <div class="col-md-6 container">
-                 <div class="thumbnail">
-                   <img src="../images/ibrahim-boran-m8YjB0noWiY-unsplash.jpg" class="rounded mx-auto d-block" alt="Photo 1">
-                   <hr>
-                   <img src="../images/billy-huynh-saS98jKhVjA-unsplash.jpg" class="rounded mx-auto d-block" alt="Photo 2">
+             </div>
+             <hr>
+             <div class="col-md-6 container">
+               <div class="thumbnail">
+                 <img src="../images/ibrahim-boran-m8YjB0noWiY-unsplash.jpg" class="rounded mx-auto d-block" alt="Photo 1">
+                 <hr>
+                 <img src="../images/billy-huynh-saS98jKhVjA-unsplash.jpg" class="rounded mx-auto d-block" alt="Photo 2">
+               </div>
+             </div>
+           </div>
+           <div class="caption ">
+             <h4>Checkout our blogs:</h4>
+           </div>
+           <div class="thumbnail row">
+             <% if (blogs.length > 0) { %>
+             <% blogs.forEach(function(blog) { %>
+             <div class="blog col-md-4">
+               <a href="/blogs/" class="text-decoration-none thumbnail-link">
+                 <div class="about-page-blog-multimedia">
+                   <% if (blog.multimedia.type === 'video') { %>
+                   <iframe src="<%= blog.multimedia.url %>" frameborder="0"></iframe>
+                   <% } else if (blog.multimedia.type === 'image') { %> <img src="data:image/<%= blog.multimedia.contentType %>;base64,<%= blog.multimedia.data.toString('base64') %>" alt="<%= blog.multimedia.description %>" class=" rounded mx-auto d-block w-100" style="max-height: 500px;">
+                   <% } else if (blog.multimedia.type === 'audio') { %>
+                   <audio src="<%= blog.multimedia.url %>" controls></audio>
+                   <% } else if (blog.multimedia.type === 'interactive') { %>
+                   <iframe src="<%= blog.multimedia.url %>" frameborder="0"></iframe>
+                   <% } %>
                  </div>
-               </div>
+                 <p class="about-page-blog-content"><%= blog.content %></p>
+               </a>
              </div>
-             <div class="caption ">
-               <h4>Checkout our blogs:</h4>
-             </div>
-             <div class="thumbnail row">
-               <% if (blogs.length > 0) { %>
-               <% blogs.forEach(function(blog) { %>
-               <div class="blog col-md-4">
-                 <a href="/blogs/" class="text-decoration-none thumbnail-link">
-                   <div class="about-page-blog-multimedia">
-                     <% if (blog.multimedia.type === 'video') { %>
-                     <iframe src="<%= blog.multimedia.url %>" frameborder="0"></iframe>
-                     <% } else if (blog.multimedia.type === 'image') { %>
-                     <img src="../../images/<%= blog.multimedia.url %>" alt="<%= blog.multimedia.description %>">
-                     <% } else if (blog.multimedia.type === 'audio') { %>
-                     <audio src="<%= blog.multimedia.url %>" controls></audio>
-                     <% } else if (blog.multimedia.type === 'interactive') { %>
-                     <iframe src="<%= blog.multimedia.url %>" frameborder="0"></iframe>
-                     <% } %>
-                   </div>
-                   <p class="about-page-blog-content"><%= blog.content %></p>
-                 </a>
-               </div>
-               <% }); %>
-               <% } else { %>
-               <p>Trying to load our blog post, stay jiggy.</p>
-               <% } %>
-             </div>
+             <% }); %>
+             <% } else { %>
+             <p>Trying to load our blog post, stay jiggy.</p>
+             <% } %>
            </div>
          </div>
        </div>
-       <hr>
+     </div>
+     <hr>
    </section>
  </main>
-<hr>
+ <hr>
  <footer>
    <%- include("../layouts/footer") %>
  </footer>

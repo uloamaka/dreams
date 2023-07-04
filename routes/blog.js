@@ -5,20 +5,10 @@ const middleware = require("../middleware");
 const multer = require("multer");
 
 // Create a multer storage configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/images"); // Set the destination folder where uploaded images will be stored
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9); // Generate a unique filename for the uploaded image
-    const extension = file.originalname.split(".").pop(); // Extract the file extension
-    cb(null, `multimedia-${uniqueSuffix}.${extension}`); // Set the filename for the uploaded image
-  },
-});
+const storage = multer.memoryStorage();
 
 // Create a multer instance with the storage configuration
-const upload = multer({ storage: storage, limits: { fileSize: 10000000 } });
-
+const upload = multer({ storage: storage });
 
 // Get all the blog posts
 router.get("/", async (req, res) => {
@@ -44,14 +34,16 @@ router.post(
   upload.single("image"),
   async (req, res) => {
     try {
-      const { title, content, multimediaDescription } = req.body;
+      const { title, content } = req.body;
+      const { originalname, buffer, mimetype } = req.file;
       const newBlog = new Blog({
-        title: title,
-        content: content,
+        title,
+        content,
         multimedia: {
           type: "image",
-          url: req.file.filename,
-          description: multimediaDescription || "Photo by alex",
+          name: originalname,
+          data: buffer,
+          contentType: mimetype,
         },
         author: req.user.name || "gift", // Set the author field based on the logged-in user
       });
@@ -65,7 +57,6 @@ router.post(
     }
   }
 );
-
 
 //render the form to add blog post
 router.get("/new", middleware.isLoggedIn, (req, res) => {

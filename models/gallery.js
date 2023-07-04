@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 
 const gallery = new mongoose.Schema({
-  image: {
+  name: {
     type: String,
+    required: true,
+  },
+  data: {
+    type: Buffer,
     required: true,
   },
   createdAt: {

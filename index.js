@@ -1,4 +1,6 @@
 const express = require("express"),
+  helmet = require("helmet"),
+  methodOverride = require("method-override"),
   app = express(),
   flash = require("connect-flash"),
   passport = require("passport"),
@@ -15,24 +17,27 @@ const express = require("express"),
   gallery = require("./routes/gallery"),
   login = require("./routes/login"),
   logout = require("./routes/logout"),
-  signup = require("./routes/signup");
-  methodOverride = require("method-override");
+  signup = require("./routes/signup"),
+ session = require("express-session");
 
+app.set("trust proxy", 1); // trust first proxy
+
+
+app.use(helmet());
 app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(
-  require("express-session")({
-    secret: "my billions i am coming",
-    resave: false,
-    saveUninitialized: false,
+  session({
+    secret: "s3Cur3",
+    name: "sessionId",
   })
-);
+);  
 // Middleware to parse URL-encoded form data
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 // Middleware to parse JSON data
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: "10mb" }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -50,29 +55,20 @@ app.use(function (req, res, next) {
   next();
 });
 
-// mongoose.set("strictQuery", false);
-// mongoose
-//   .connect("mongodb://127.0.0.1:27017/splendidV8", {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("mongoDB connected successfully!"))
-//   .catch((err) => console.error("Could not connect to mongoDB", err));
-
 //connect to atlas
 const uri =
   "mongodb+srv://dreams:pass5055@dreams.5vef4ul.mongodb.net/?retryWrites=true&w=majority";
 
-  mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-  const db = mongoose.connection;
-  db.on("error", console.error.bind(console, "Connection error:"));
-  db.once("open", () => {
-    console.log("Connected to MongoDB Atlas");
-  });
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "Connection error:"));
+db.once("open", () => {
+  console.log("Connected to MongoDB Atlas");
+});
 // app.use(bodyParser.json());
 app.use(express.json());
 app.use("/", home);
@@ -86,17 +82,10 @@ app.use("/login", login);
 app.use("/logout", logout);
 app.use("/signup", signup);
 
-
-
-
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log(`Dreams listening on "port : ${port}" ...`);
 });
 
-
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
-
-
-

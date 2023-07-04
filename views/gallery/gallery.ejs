@@ -1,47 +1,47 @@
 <%- include("../layouts/header") %>
 <main>
-<section>
-  <div class="container">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-md-6 mx-auto">
-          <h1>Gallery</h1>
-        </div>
+  <section>
+    <div class="container">
+      <div class="col-12">
         <div class="row">
-          <% for( let i = 0; i < galleries.length; i++ ) { %>
-          <div class="col-lg-4 col-md-6 col-sm-6 thumbnails <% if (i >= 6) { %>hidden<% } %> p-2">
-            <div class="">
-              <% const gallery = galleries[i]; %>
-              <img src="/images/<%= gallery.image %>" class=" gallery-image  rounded mx-auto d-block w-100" alt="Gallery Image" data-toggle="modal" data-target="#imageModal<%= i %>">
-            </div>
+          <div class="col-md-6 mx-auto">
+            <h1>Gallery</h1>
           </div>
-          <!-- Modal -->
-          <div class="modal fade" id="imageModal<%= i %>" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel<%= i %>" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="imageModalLabel<%= i %>">Gallery Image</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <img src="/images/<%= gallery.image %>" class="img-fluid" alt="Gallery Image">
+          <div class="row">
+            <% for( let i = 0; i < galleries.length; i++ ) { %>
+            <div class="col-lg-4 col-md-6 col-sm-6 thumbnails <% if (i >= 6) { %>hidden<% } %> p-2">
+              <div class="">
+                <% const gallery = galleries[i]; %>
+                 <img src="data:<%= gallery.contentType %>;base64,<%= gallery.data.toString('base64') %>" class=" gallery-image  rounded mx-auto d-block w-100" alt="<%= gallery.name %>" data-toggle="modal" data-target="#imageModal<%= i %>">
+              </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="imageModal<%= i %>" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel<%= i %>" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel<%= i %>">Gallery Image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <img src="data:<%= gallery.contentType %>;base64,<%= gallery.data.toString('base64') %>" class="img-fluid" alt="Gallery Image">
+                  </div>
                 </div>
               </div>
             </div>
+            <% } %>
           </div>
-          <% } %>
+        </div>
+        <div>
+          <button class="btn btn-primary" id="load-more">Show More</button>
+          <hr>
+          <a href="gallery/new">Add new post</a>
         </div>
       </div>
-      <div>
-        <button class="btn btn-primary" id="load-more">Show More</button>
-        <hr>
-        <a href="gallery/new">Add new post</a>
-      </div>
     </div>
-  </div>
-</section>
+  </section>
 </main>
 <hr>
 <%- include("../layouts/footer") %>
