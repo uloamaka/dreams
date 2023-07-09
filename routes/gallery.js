@@ -3,25 +3,38 @@ const router = express.Router();
 const Gallery = require("../models/gallery");
 const middleware = require("../middleware");
 const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDNAME,
+  api_key: process.env.CLOUDAPIKEY,
+  api_secret: process.env.CLOUDINARYSECRET,
+});
 
 // Create a multer storage configuration
-const storage = multer.memoryStorage();
-
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "uploads", // Optional folder name in Cloudinary
+    allowedFormats: ["jpg", "png"], // Allowed image formats
+  },
+});
 
 // Create a multer instance with the storage configuration
 const upload = multer({ storage: storage });
 
-//GET all galleries
 router.get("/", async (req, res) => {
   try {
+    // Retrieve all galleries from the database
     const galleries = await Gallery.find();
+
+    // Render the galleries view and pass the galleries data
     res.render("gallery/gallery", { galleries });
   } catch (err) {
-    const message = err.message || "Error retrieving galleries";
-    req.flash("err", "err.message");
+    res.status(400).json({ message: err.message });
   }
 });
-
 
 // Render the form to add images to gallery
 router.get("/new", middleware.isLoggedIn, async (req, res) => {
@@ -38,22 +51,32 @@ router.get("/:id", getGallery, (req, res) => {
   res.render("gallery/gallery-details", { gallery: res.gallery });
 });
 
-// CREATE a new gallery post
+
 router.post(
   "/",
   middleware.isLoggedIn,
   upload.single("image"),
   async (req, res) => {
     try {
-      const { originalname,buffer, mimetype } = req.file; // Get the filename of the uploaded image
+      const { originalname, path } = req.file;
+
+      // Upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(path);
+
+      // Create a new Gallery instance with Cloudinary's public URL and other information
       const newGallery = new Gallery({
         name: originalname,
-        data: buffer,
-        contentType: mimetype
+        imageUrl: result.secure_url,
+        publicId: result.public_id,
       });
+
+      // Save the new Gallery instance to the database
       const savedGallery = await newGallery.save();
+      req.flash("success", "gallery successfully uploaded");
+      // Redirect to the gallery page
       res.status(201).redirect("/gallery");
     } catch (err) {
+      req.flash("error", "Failed to upload gallery");
       res.status(400).json({ message: err.message });
     }
   }

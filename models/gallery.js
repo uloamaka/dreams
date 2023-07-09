@@ -1,21 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const gallery = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  data: {
-    type: Buffer,
-    required: true,
-  },
+  name: String,
+  imageUrl: String, // Store the Cloudinary URL of the uploaded image
+  publicId: String,
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-const Gallery = mongoose.model('Gallery', gallery);
-
+const Gallery = mongoose.model("Gallery", gallery);
 
 module.exports = Gallery;

@@ -1,20 +1,51 @@
-<%-include ("../layouts/header") %>
+<%- include("../layouts/header") %>
 <main>
-    <section>
-        <div id="landing-header">
-          <h1>DreamsEvents</h1>
-          <a href="/contact" class="btn btn-lg btn-success">call now!</a>
+  <section class="">
+    <div id="landing-header">
+      <h1>DreamsEvents</h1>
+      <a href="/contact" class="btn btn-lg btn-success">call now!</a>
+    </div>
+
+    <ul class="slideshow">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </section>
+ <hr>
+  <section class="second ">
+    <div class="container">
+      <div class="caption">
+        <h4>Checkout our blogs:</h4>
+      </div>
+      <div class="thumbnail row">
+        <% if (blogs.length > 0) { %>
+        <% blogs.forEach(function(blog) { %>
+        <div class="blog col-md-4">
+          <a href="/blogs/" class="text-decoration-none thumbnail-link">
+            <div class="about-page-blog-multimedia">
+              <% if (blog.multimedia.type === 'video') { %>
+              <iframe src="<%= blog.multimedia.url %>" frameborder="0"></iframe>
+              <% } else if (blog.multimedia.type === 'image') { %>
+              <img src="<%= blog.multimedia.imageUrl %>" alt="<%= blog.multimedia.description %>" class="rounded mx-auto d-block w-100" style="max-height: 500px;">
+              <% } else if (blog.multimedia.type === 'audio') { %>
+              <audio src="<%= blog.multimedia.url %>" controls></audio>
+              <% } else if (blog.multimedia.type === 'interactive') { %>
+              <iframe src="<%= blog.multimedia.url %>" frameborder="0"></iframe>
+              <% } %>
+            </div>
+            <p class="about-page-blog-content"><%= blog.content %></p>
+          </a>
         </div>
-
-        <ul class="slideshow">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-
-    </section>
+        <% }); %>
+        <% } else { %>
+        <p>Trying to load our blog post, stay jiggy.</p>
+        <% } %>
+      </div>
+    </div>
+  </section>
 </main>
 <hr>
-<%-include ("../layouts/footer") %>
+<%- include("../layouts/footer") %>

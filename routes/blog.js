@@ -3,9 +3,22 @@ const router = express.Router();
 const Blog = require("../models/blog");
 const middleware = require("../middleware");
 const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
 
-// Create a multer storage configuration
-const storage = multer.memoryStorage();
+cloudinary.config({
+  cloud_name: process.env.CLOUDNAME,
+  api_key: process.env.CLOUDAPIKEY,
+  api_secret: process.env.CLOUDINARYSECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "uploads", // Optional folder name in Cloudinary
+    allowedFormats: ["jpg", "png"], // Allowed image formats
+  },
+});
 
 // Create a multer instance with the storage configuration
 const upload = multer({ storage: storage });
@@ -35,15 +48,17 @@ router.post(
   async (req, res) => {
     try {
       const { title, content } = req.body;
-      const { originalname, buffer, mimetype } = req.file;
+      const { originalname, path} = req.file;
+      // Upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(path);
       const newBlog = new Blog({
         title,
         content,
         multimedia: {
           type: "image",
           name: originalname,
-          data: buffer,
-          contentType: mimetype,
+          imageUrl: result.secure_url,
+          publicId: result.public_id,
         },
         author: req.user.name || "gift", // Set the author field based on the logged-in user
       });

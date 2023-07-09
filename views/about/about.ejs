@@ -49,7 +49,7 @@
                  <div class="about-page-blog-multimedia">
                    <% if (blog.multimedia.type === 'video') { %>
                    <iframe src="<%= blog.multimedia.url %>" frameborder="0"></iframe>
-                   <% } else if (blog.multimedia.type === 'image') { %> <img src="data:image/<%= blog.multimedia.contentType %>;base64,<%= blog.multimedia.data.toString('base64') %>" alt="<%= blog.multimedia.description %>" class=" rounded mx-auto d-block w-100" style="max-height: 500px;">
+                   <% } else if (blog.multimedia.type === 'image') { %> <img src="<%= blog.multimedia.imageUrl %>" alt="<%= blog.multimedia.description %>" class=" rounded mx-auto d-block w-100" style="max-height: 500px;">
                    <% } else if (blog.multimedia.type === 'audio') { %>
                    <audio src="<%= blog.multimedia.url %>" controls></audio>
                    <% } else if (blog.multimedia.type === 'interactive') { %>

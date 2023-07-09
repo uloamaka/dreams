@@ -24,7 +24,8 @@
   z-index: 0;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding-bottom: 200px;
+  /* padding: 0; */
 }
 
 .slideshow li {

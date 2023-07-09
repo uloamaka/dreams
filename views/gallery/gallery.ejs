@@ -12,7 +12,7 @@
             <div class="col-lg-4 col-md-6 col-sm-6 thumbnails <% if (i >= 6) { %>hidden<% } %> p-2">
               <div class="">
                 <% const gallery = galleries[i]; %>
-                 <img src="data:<%= gallery.contentType %>;base64,<%= gallery.data.toString('base64') %>" class=" gallery-image  rounded mx-auto d-block w-100" alt="<%= gallery.name %>" data-toggle="modal" data-target="#imageModal<%= i %>">
+                <img src="<%= gallery.imageUrl %>" alt="<%= gallery.name %>" class=" gallery-image  rounded mx-auto d-block w-100" data-toggle="modal" data-target="#imageModal<%= i %>">
               </div>
             </div>
             <!-- Modal -->
@@ -26,7 +26,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <img src="data:<%= gallery.contentType %>;base64,<%= gallery.data.toString('base64') %>" class="img-fluid" alt="Gallery Image">
+                    <img src="<%= gallery.imageUrl %>" alt="<%= gallery.name %>" class="img-fluid">
                   </div>
                 </div>
               </div>

@@ -19,10 +19,8 @@ const blogSchema = new mongoose.Schema({
       type: String,
       required: true, // This field is required
     },
-    data: {
-      type: Buffer,
-      required: true,
-    },
+    imageUrl: String, // Store the Cloudinary URL of the uploaded image
+    publicId: String,
     description: {
       type: String,
       default: "Photo by alex",
